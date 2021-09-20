@@ -8,26 +8,18 @@ const createRequest = ({ url, data, method, callback }) => {
   const run = () => {
     let xhr = new XMLHttpRequest();
     xhr.onerror = (error) => {
-      console.error("onerror: ", error);
       if (retry <= 0) {
-        callback(error);  
+        callback(error);
       } else {
         --retry;
         setTimeout(() => {
           run();
         }, 200);
       }
-      
     };
 
     xhr.onload = () => {
-      console.log('RETRY', retry);
-      if (xhr.status !== 200) {
-        console.log("xhr status: ", status);
-        callback(new Error(`Error ${xhr.status}: ${xhr.statusText}`));
-      } else {
-        callback(null, xhr.response);
-      }
+      callback(null, xhr.response);
     };
 
     xhr.responseType = "json";

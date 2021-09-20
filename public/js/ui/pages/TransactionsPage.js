@@ -94,7 +94,6 @@ class TransactionsPage {
   render(options) {
     if (options) {
       this.lastOptions = options;
-      console.log("options: ", options);
       Account.get(options.account_id, (error, result) => {
         if (result?.success === true) {
           this.renderTitle(result.data.name);
@@ -132,7 +131,17 @@ class TransactionsPage {
    * в формат «10 марта 2019 г. в 03:20»
    * */
   formatDate(date) {
-    console.log(date);
+    const created = new Date(date);
+    const createdDate = created.toLocaleDateString("ru-Ru", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+    const createdTime = created.toLocaleTimeString("ru-Ru", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `${createdDate} в ${createdTime}`;
   }
 
   /**
@@ -140,6 +149,7 @@ class TransactionsPage {
    * item - объект с информацией о транзакции
    * */
   getTransactionHTML(item) {
+    const dateString = this.formatDate(item.created_at);
     return `
     <div class="transaction transaction_${item.type} row">
       <div class="col-md-7 transaction__details">
@@ -149,7 +159,7 @@ class TransactionsPage {
         <div class="transaction__info">
             <h4 class="transaction__title">${item.name}</h4>
             <!-- дата -->
-            <div class="transaction__date">10 марта 2019 г. в 03:20</div>
+            <div class="transaction__date">${dateString}</div>
         </div>
       </div>
       <div class="col-md-3">

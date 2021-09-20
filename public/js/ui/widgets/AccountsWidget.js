@@ -74,7 +74,6 @@ class AccountsWidget {
    * в боковой колонке
    * */
   clear() {
-    console.log("CLEAR")
     const accounts = [...this.element.querySelectorAll(".account")];
     accounts.forEach((item) => {
       item.remove();

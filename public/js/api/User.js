@@ -27,12 +27,8 @@ class User {
    * из локального хранилища
    * */
   static current() {
-    try {
-      const current = JSON.parse(localStorage.getItem("user"));
-      return current;
-    } catch (err) {
-      return undefined;
-    }
+    const current = JSON.parse(localStorage.getItem("user"));
+    return current ? current : undefined;
   }
 
   /**
@@ -104,16 +100,16 @@ class User {
    * */
   static logout(callback) {
     const options = {
-      url: this.URL + '/logout',
+      url: this.URL + "/logout",
       data: {},
-      method: 'POST',
+      method: "POST",
       callback: (err, response) => {
-        if (response && response.success === true) {
+        if (response.success) {
           this.unsetCurrent();
         }
         callback(err, response);
-      }
-    }
+      },
+    };
     createRequest(options);
   }
 }
